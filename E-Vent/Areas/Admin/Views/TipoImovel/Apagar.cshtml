@@ -1,0 +1,67 @@
+﻿@model E_Vent.Areas.Admin.Models.TipoImovel
+@{
+    ViewBag.Title = "Apagar";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-12 top-20 padding-0">
+    <div class="col-md-12">
+        <div class="panel">
+            <div class="panel-heading"><h3>@ViewBag.Title</h3></div>
+            <div class="panel-body">
+                <form action="/Admin/TipoImovel/Apagar/@Model.Id" method="post">
+                    <div class="col-md-0" hidden>
+                        <div class="form-group col-sm-12">
+                            <label class=" control-label">ID</label>
+                            <input type="text" class="form-control" value="@Model.Id" disabled>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group col-sm-12">
+                            <label class=" control-label">Nome</label>
+                            <input type="text" class="form-control" value="@Model.Nome" disabled>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-group" style="margin-top:0px !important;">
+                            <p>Selecione um Status</p>
+                            <select class="col-md-12" id="Status" name="Status" disabled>
+                                @foreach (var status in ViewBag.Status)
+                                {
+                                    if (status == Model.Status)
+                                    {
+                                        <option selected value="@Convert.ToInt32(status)">@status</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@Convert.ToInt32(status)">@status</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group form-animate-text" style="margin-top:0px !important;">
+                            <div class="btn-group" role="group" aria-label="...">
+                                <a type="button" class="btn btn-primary" href="/Admin/TipoImovel/Index">
+                                    Cancelar
+                                </a>
+                                <input class="submit btn btn-danger" type="submit" value="Apagar">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles{
+
+}
+
+@section Scripts{
+
+}
+

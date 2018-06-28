@@ -1,0 +1,203 @@
+﻿@using E_Vent.Models.Pessoa;
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewBag.Title - E-Vent</title>
+
+    <!-- start: Css -->
+    <link rel="stylesheet" type="text/css" href="~/Content/asset/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/asset/css/plugins/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/Content/asset/css/plugins/simple-line-icons.css" />
+    <link rel="stylesheet" type="text/css" href="~/Content/asset/css/plugins/animate.min.css" />
+
+    <!-- custom -->
+    <link rel="stylesheet" type="text/css" href="~/Content/asset/css/style.css">
+    @RenderSection("Styles", required: false)
+    <!-- end: Css -->
+
+    <link rel="shortcut icon" href="~/Content/asset/img/logomi.png">
+</head>
+
+<body class="dashboard">
+    <!-- start: Header -->
+    <nav class="navbar navbar-default header navbar-fixed-top">
+        <div class="col-md-12 nav-wrapper">
+            <div class="navbar-header" style="width:100%;">
+                <div class="opener-left-menu is-open">
+                    <span class="top"></span>
+                    <span class="middle"></span>
+                    <span class="bottom"></span>
+                </div>
+                <a href="/Home/Index" class="navbar-brand">
+                    <b>E-VENT</b>
+                </a>
+
+                <ul class="navbar-brand">
+                    <li>
+                        <div id="google_translate_element"></div>
+                    </li>
+                </ul>
+
+                @if (Session["usuario"] != null)
+                {
+                    PessoaSession usuario = Session["usuario"] as PessoaSession;
+                    <ul class="nav navbar-nav navbar-right user-nav">
+                        <li class="user-name"><span>@usuario.Nome</span></li>
+                        <li><a href="/Home"><i class="fa fa-cog" aria-hidden="true"></i></a></li>
+                        <li><a href="/Usuario/Sair"><i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
+                    </ul>
+                }
+            </div>
+        </div>
+    </nav>
+    <!-- end: Header -->
+
+    <div class="container-fluid mimin-wrapper">
+
+        <!-- start:Left Menu -->
+        <div id="left-menu">
+            <div class="sub-left-menu scroll">
+                <ul class="nav nav-list">
+                    <li><div class="left-bg"></div></li>
+                    <!--
+                        <li class="time">
+                            <h1 class="animated fadeInLeft">00:00</h1>
+                            <p class="animated fadeInRight">@DateTime.Now.DayOfWeek, @DateTime.Now.Day de @DateTime.Now.Month de @DateTime.Now.Year </p>
+                        </li>
+                    -->
+                    <li class="ripple"><a href="/Home/Index"><span class="fa-home fa"></span>Página Inicial</a></li>
+
+                    <li class="ripple">
+                        <a class="tree-toggle nav-header">
+                            <span class="fa fa-map-o"></span> Dados
+                            <span class="fa-angle-right fa right-arrow text-right"></span>
+                        </a>
+                        <ul class="nav nav-list tree">
+                            <li><a href="chartjs.html">Dados Basicos</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="ripple">
+                        <a class="tree-toggle nav-header"><span class="fa fa-gear"></span> Administrativo  <span class="fa-angle-right fa right-arrow text-right"></span> </a>
+                        <ul class="nav nav-list tree">
+                            <li><a href="/Admin/TipoImovel">Tipo de Imovel</a></li>
+                            <li><a href="/Admin/Usuarios">Usuarios</a></li>
+                            <li class="ripple">
+                                <a class="sub-tree-toggle nav-header">
+                                    <span class="fa fa-globe"></span> Localização
+                                    <span class="fa-angle-right fa right-arrow text-right"></span>
+                                </a>
+                                <ul class="nav nav-list sub-tree">
+                                    <li><a href="/Admin/Estado">Estados</a></li>
+                                    <li><a href="/Admin/Cidade">Cidades</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- end: Left Menu -->
+        <!-- start: content -->
+        <div id="content">
+            <!-- Topo -->
+            <div class="panel box-shadow-none content-header">
+                <div class="panel-body">
+                    <div class="col-md-12">
+                        <h3 class="animated fadeInLeft">@ViewBag.Title</h3>
+                        <p class="animated fadeInDown">
+                            <a href="/@ViewContext.RouteData.DataTokens["area"]"> @ViewContext.RouteData.DataTokens["area"]</a>
+                            <a href="/@ViewContext.RouteData.DataTokens["area"]/@ViewContext.RouteData.Values["controller"].ToString()">
+                                <span class="fa-angle-right fa"></span> @ViewContext.RouteData.Values["controller"].ToString()
+                            </a>
+                            <span class="fa-angle-right fa"></span> @ViewContext.RouteData.Values["action"].ToString()
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- Conteudo -->
+            @RenderBody()
+        </div>
+        <!-- end: content -->
+    </div>
+
+    <!-- start: Mobile -->
+    <div id="mimin-mobile" class="reverse">
+        <div class="mimin-mobile-menu-list">
+            <div class="col-md-12 sub-mimin-mobile-menu-list animated fadeInLeft">
+                <ul class="nav nav-list">
+                    <li class="ripple"><a href="index.html"><span class="fa-home fa"></span>Dashboard</a></li>
+
+                    <li class="ripple">
+                        <a class="tree-toggle nav-header">
+                            <span class="fa-diamond fa"></span> Layout
+                            <span class="fa-angle-right fa right-arrow text-right"></span>
+                        </a>
+                        <ul class="nav nav-list tree">
+                            <li><a href="topnav.html">Top Navigation</a></li>
+                            <li><a href="boxed.html">Boxed</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="ripple">
+                        <a class="tree-toggle nav-header">
+                            <span class="fa-area-chart fa"></span> Charts
+                            <span class="fa-angle-right fa right-arrow text-right"></span>
+                        </a>
+                        <ul class="nav nav-list tree">
+                            <li><a href="chartjs.html">ChartJs</a></li>
+                            <li><a href="morris.html">Morris</a></li>
+                            <li><a href="flot.html">Flot</a></li>
+                            <li><a href="sparkline.html">SparkLine</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="ripple">
+                        <a class="tree-toggle nav-header"><span class="fa "></span> MultiLevel  <span class="fa-angle-right fa right-arrow text-right"></span> </a>
+                        <ul class="nav nav-list tree">
+                            <li><a href="view-mail.html">Level 1</a></li>
+                            <li><a href="view-mail.html">Level 1</a></li>
+                            <li class="ripple">
+                                <a class="sub-tree-toggle nav-header">
+                                    <span class="fa fa-envelope-o"></span> Level 1
+                                    <span class="fa-angle-right fa right-arrow text-right"></span>
+                                </a>
+                                <ul class="nav nav-list sub-tree">
+                                    <li><a href="mail-box.html">Level 2</a></li>
+                                    <li><a href="compose-mail.html">Level 2</a></li>
+                                    <li><a href="view-mail.html">Level 2</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <button id="mimin-mobile-menu-opener" class="animated rubberBand btn btn-circle btn-danger">
+        <span class="fa fa-bars"></span>
+    </button>
+    <!-- end: Mobile -->
+    <!-- start: Javascript -->
+    <script src="~/Content/asset/js/jquery.min.js"></script>
+    <script src="~/Content/asset/js/jquery.ui.min.js"></script>
+    <script src="~/Content/asset/js/bootstrap.min.js"></script>
+    <script src="~/Content/asset/js/plugins/moment.min.js"></script>
+    <script src="~/Content/asset/js/plugins/moment-with-locales.js"></script>
+    <script src="~/Content/asset/js/plugins/jquery.nicescroll.js"></script>
+
+    <!-- custom -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({ pageLanguage: 'pt', layout: google.translate.TranslateElement.InlineLayout.SIMPLE }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script src="~/Content/asset/js/main.js"></script>
+    @RenderSection("Scripts", required: false)
+    <!-- end: Javascript -->
+</body>
+</html>

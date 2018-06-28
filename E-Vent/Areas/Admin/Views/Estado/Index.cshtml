@@ -1,0 +1,128 @@
+﻿@model IEnumerable<E_Vent.Areas.Admin.Models.Estado>
+@{
+    ViewBag.Title = "Estado";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Formulario de Cadastro -->
+<div class="col-md-12 top-10 padding-0">
+    <div class="col-md-12">
+        <div class="panel">
+            <div class="panel-heading"><h3>Cadastrar - @ViewBag.Title</h3></div>
+            <div class="panel-body">
+                <form action="/Admin/@ViewBag.Title/Cadastrar" method="post">
+                    <div class="col-md-6">
+                        <div class="form-group form-animate-text" style="margin-top:0px !important;">
+                            <input type="text" size="60" maxlength="60" class="form-text" id="Nome" name="Nome" required>
+                            <span class="bar"></span>
+                            <label>Nome do Estado</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group form-animate-text" style="margin-top:0px !important;">
+                            <input type="text" size="2" maxlength="2" class="form-text" id="Sigla" name="Sigla" style="text-transform:uppercase" required>
+                            <span class="bar"></span>
+                            <label>Sigla do Estado</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group form-animate-text" style="margin-top:0px !important;">
+                            <p>Selecione um Status</p>
+                            <select class="col-md-12" id="Status" name="Status">
+                                @foreach (var status in ViewBag.Status)
+                                {
+                                    <option value="@Convert.ToInt32(status)">@status</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <input class="submit btn btn-danger" type="submit" value="Cadastrar @ViewBag.Title">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@if (TempData["Erro"] != null)
+{
+    <div class="col-md-12">
+        <div class="alert alert-danger alert-border alert-dismissible fade in" role="alert">
+            <h3>
+                @TempData["Erro"].ToString()
+                <button type="button" class="close pull-right" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </h3>
+        </div>
+    </div>
+}
+<!-- Tablea de Listagem -->
+<div class="col-md-12 top-10 padding-0">
+    <div class="col-md-12">
+        <div class="panel">
+            <div class="panel-heading"><h3>Listar - @ViewBag.Title</h3></div>
+            <div class="panel-body">
+                <div class="responsive-table">
+                    <table id="datatables-example" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome do Estado</th>
+                                <th>Sigla do Estado</th>
+
+                                <th>Status</th>
+                                <th>Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var estado in Model)
+                            {
+                                <tr>
+                                    <td>@estado.Id</td>
+                                    <td>@estado.Nome</td>
+                                    <td>@estado.Sigla</td>
+                                    <td>@estado.Status</td>
+                                    <td>
+                                        <div class="btn-group" role="group" aria-label="...">
+                                            <a type="button" class="btn btn-default" href="/Admin/Estado/Editar/@estado.Id">
+                                                Editar
+                                            </a>
+                                            <a type="button" class="btn btn-danger" href="/Admin/Estado/Apagar/@estado.Id">
+                                                Apagar
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles{
+    <link rel="stylesheet" type="text/css" href="~/Content/asset/css/plugins/datatables.bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/Content/asset/css/plugins/select2.min.css" />
+}
+
+@section Scripts{
+    <script src="~/Content/asset/js/plugins/jquery.datatables.min.js"></script>
+    <script src="~/Content/asset/js/plugins/datatables.bootstrap.min.js"></script>
+    <script src="~/Content/asset/js/plugins/select2.full.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#datatables-example').DataTable();
+        });
+
+        $(document).ready(function () {
+            $("#Status").select2({
+                placeholder: "Selecione o Status",
+            });
+        });
+    </script>
+}
+

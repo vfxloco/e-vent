@@ -1,0 +1,208 @@
+﻿@model E_Vent.Models.Pessoa.PessoaViewModel
+
+@{
+    ViewBag.Title = "Cadastrar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-lg-12" style="padding:20px;padding-bottom:20px;">
+    <div class="panel">
+        <div class="panel-heading">
+            <h3>Registra-se</h3>
+        </div>
+        <div class="panel-body">
+            <form action="/Usuario/Cadastrar" id="signupForm" method="post">
+                <div class="col-md-12">
+                    <div class="form-group form-animate-text" style="margin-top:40px !important;">
+                        <input type="text" class="form-text" id="Nome" name="Nome" required>
+                        <span class="bar"></span>
+                        <label>Nome Completo*</label>
+                    </div>
+                    <div class="form-group form-animate-text" style="margin-top:40px !important;">
+                        <input type="email" class="form-text" id="Email" name="Email" required>
+                        <span class="bar"></span>
+                        <label>E-mail*</label>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group form-animate-text">
+                        <input type="password" class="form-text" id="Senha" name="Senha" required>
+                        <span class="bar"></span>
+                        <label>Senha*</label>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group form-animate-text">
+                        <input type="password" class="form-text" id="ConfirmSenha" name="ConfirmSenha" required>
+                        <span class="bar"></span>
+                        <label>Confirmar Senha*</label>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group form-animate-text">
+                        <input type="text" class="form-text" id="Website" name="Website">
+                        <span class="bar"></span>
+                        <label>Web Site</label>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <div id="tab" class="btn-group btn-group-justified" data-toggle="buttons">
+                                    <a href="#fisica" class="btn btn-default active" data-toggle="tab">
+                                        <input type="radio" name="Tipo_Pessoa" value="1" />Pessoa Física
+                                    </a>
+                                    <a href="#juridica" class="btn btn-default" data-toggle="tab">
+                                        <input type="radio" name="Tipo_Pessoa" value="2" />Pessoa Jurídica
+                                    </a>
+                                </div>
+
+                                <div class="tab-content" style="margin-top:15px;">
+                                    <div class="tab-pane active" id="fisica">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group form-animate-text">
+                                                    <input type="text" class="form-text" id="RG" name="RG">
+                                                    <span class="bar"></span>
+                                                    <label>RG</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group form-animate-text">
+                                                    <input type="text" class="form-text" id="CPF" name="CPF">
+                                                    <span class="bar"></span>
+                                                    <label>CPF</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group form-animate-text">
+                                                    <input type="text" class="form-text" id="Data_Nascimento" name="Data_Nascimento">
+                                                    <span class="bar"></span>
+                                                    <label>Data Nascimento</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="juridica">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group form-animate-text">
+                                                    <input type="text" class="form-text" id="Insc_Estadual" name="Insc_Estadual">
+                                                    <span class="bar"></span>
+                                                    <label>Inscrição Estadual</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group form-animate-text">
+                                                    <input type="text" class="form-text" id="CNPJ" name="CNPJ">
+                                                    <span class="bar"></span>
+                                                    <label>CNPJ</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group form-animate-text">
+                                                    <input type="text" class="form-text" id="Data_Fundacao" name="Data_Fundacao">
+                                                    <span class="bar"></span>
+                                                    <label>Data Fundação</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12" style="margin-top:40px !important;">
+                    <div class="col-md-6">
+                        <div class="form-group form-animate-checkbox">
+                            <input type="checkbox" class="checkbox" id="AcordoForm" name="AcordoForm">
+                            <label>
+                                Por favor, concorde com a nossa política.
+                            </label>
+                        </div>
+                    </div>
+                    <input class="submit btn btn-danger" type="submit" value="Submit">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Styles{
+
+}
+
+@section Scripts{
+    <script src="~/Content/asset/js/jquery.mask.js"></script>
+    <script src="~/Content/asset/js/plugins/jquery.validate.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#RG').mask('00.000.000-0', { reverse: true });
+            $('#CPF').mask('000.000.000/00', { reverse: true });
+            $('#Data_Nascimento').mask('00/00/0000');
+            $('#CNPJ').mask('00.000.000/0000-00', { reverse: true });
+            $('#Data_Fundacao').mask('00/00/0000');
+        });
+
+        $("#signupForm").validate({
+            errorElement: "em",
+            errorPlacement: function (error, element) {
+                $(element.parent("div").addClass("form-animate-error"));
+                error.appendTo(element.parent("div"));
+            },
+            success: function (label) {
+                $(label.parent("div").removeClass("form-animate-error"));
+            },
+            rules: {
+                Nome: {
+                    required: true,
+                    minlength: 3
+                },
+                Senha: {
+                    required: true,
+                    minlength: 5
+                },
+                ConfirmSenha: {
+                    required: true,
+                    minlength: 5,
+                    equalTo: "#Senha"
+                },
+                Email: {
+                    required: true,
+                    email: true
+                },
+                Insc_Estadual: {
+                    number: true
+                },
+                AcordoForm: "required"
+            },
+            messages: {
+                Nome: {
+                    required: "Por favor informe seu Nome Completo",
+                    minlength: "Seu nome deve ter pelo menos 3 caracteres"
+                },
+                Senha: {
+                    required: "Por favor, forneça uma senha",
+                    minlength: "Sua senha deve ter pelo menos 5 caracteres"
+                },
+                ConfirmSenha: {
+                    required: "Por favor, forneça uma senha",
+                    minlength: "Sua senha deve ter pelo menos 5 caracteres",
+                    equalTo: "Por favor, digite a mesma senha"
+                },
+                Email: "Por favor insira um endereço de e-mail válido",
+                AcordoForm: "Por favor, aceite nossa política"
+            }
+        });
+
+    </script>
+}

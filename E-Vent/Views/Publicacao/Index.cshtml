@@ -1,0 +1,516 @@
+﻿
+@{
+    ViewBag.Title = "Publicações";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if(!string.IsNullOrEmpty(ViewBag.Publicacao.Imagem)){
+    <div class="col-lg-6">
+        <div class="panel">
+            <div class="panel-body" style="width:100%;">
+                <div class="col-md-12 col-sm-12 col-xs-12 item">
+                    <img class="img-thumbnail img-responsive" src="@ViewBag.Publicacao.Imagem">
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="col-lg-@(string.IsNullOrEmpty(ViewBag.Publicacao.Imagem) ? 12: 6)">
+    <div class="panel">
+        <div class="panel-body" style="width:100%;">
+            <div class="col-md-12 col-sm-12 col-xs-12 item">
+                       @{
+                            foreach (var cidade in ViewBag.Cidade)
+                            {
+                                if (ViewBag.Publicacao.Cidade_Id == cidade.Id)
+                                {
+                                    <div style="width: 100%;"><iframe width="100%" height="300" src="https://maps.google.com/maps?width=10000%&amp;height=1000&amp;hl=en&amp;q=@ViewBag.Publicacao.Numero,@ViewBag.Publicacao.Rua,@ViewBag.Publicacao.Bairro,@cidade.Nome,@cidade.Estado_Nome&amp;ie=UTF8&amp;t=&amp;z=19&amp;iwloc=B&amp;output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe></div>
+                                }
+                            }
+                        }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-12">
+    <div class="panel">
+        <div class="panel-heading">
+            <h3>Descrição</h3>
+        </div>
+        <div class="panel-body">
+            <textarea class="form-control" style="max-width: 100%; max-height: 200px; min-height: 60px; min-width: 100%;" rows="4" cols="50" disabled>@ViewBag.Publicacao.Descricao</textarea>
+            <p>
+                <br>
+                Tipo de Imovel:
+                @foreach (var tipoImovel in ViewBag.TipoImovel)
+                {
+                    if (tipoImovel.Id == ViewBag.Publicacao.Tipo_Imovel_Id)
+                    {
+                        <b>@tipoImovel.Nome</b>
+                    }
+                }
+                -- Publicado em <b>@ViewBag.Publicacao.Data_Publicacao.Date.ToString("dd/MM/yyyy")</b>
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-6">
+    <div class="panel">
+        <div class="panel-heading">
+            <h3>Localização</h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="form-group col-sm-12">
+                        <label class=" control-label">Estado</label>
+                        @{
+                            foreach (var cidade in ViewBag.Cidade)
+                            {
+                                if (ViewBag.Publicacao.Cidade_Id == cidade.Id)
+                                {
+                                    <input type="text" class="form-control" value="@cidade.Estado_Nome (@cidade.Estado_Sigla)" disabled>
+                                }
+                            }
+                        }
+                    </div>
+                </div>
+
+                <div class="col-md-7">
+                    <div class="form-group col-sm-12">
+                        <label class=" control-label">Cidade</label>
+                        @foreach (var cidade in ViewBag.Cidade)
+                        {
+                            if (ViewBag.Publicacao.Cidade_Id == cidade.Id)
+                            {
+                                <input type="text" class="form-control" value="@cidade.Nome" disabled>
+                            }
+                        }
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group col-sm-12">
+                        <label class=" control-label">Bairro</label>
+                        <input type="text" class="form-control" value="@ViewBag.Publicacao.Bairro" disabled>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group col-sm-12">
+                        <label class=" control-label">Rua</label>
+                        <input type="text" class="form-control" value="@ViewBag.Publicacao.Rua" disabled>
+                    </div>
+                </div>
+
+                <div class="col-md-9">
+                    <div class="form-group col-sm-12">
+                        <label class=" control-label">Complemento</label>
+                        <input type="text" class="form-control" value="@ViewBag.Publicacao.Complemento" disabled>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group col-sm-12">
+                        <label class=" control-label">Numero</label>
+                        <input type="text" class="form-control" value="@ViewBag.Publicacao.Numero" disabled>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group col-sm-12">
+                        <label class=" control-label">CEP</label>
+                        <input type="text" class="form-control" value="@ViewBag.Publicacao.CEP" disabled>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-6">
+    <div class="panel">
+        <div class="panel-heading">
+            <h3>Calendario</h3>
+        </div>
+        <div class="panel-body">
+            <div id="calendar"></div>
+
+            <div id="myModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-titulo"><span id="eventTitle"></span></h4>
+                        </div>
+                        <div class="modal-body">
+                            @if (ViewBag.User != null && ViewBag.User.Id == ViewBag.Publicacao.Pessoa_Id) 
+                            {
+                                <button id="btnDelete" class="btn btn-default btn-sm pull-right">
+                                    <span class="glyphicon glyphicon-remove"></span> Remover
+                                </button>
+                                <button id="btnEdit" class="btn btn-default btn-sm pull-right" style="margin-right:5px;">
+                                    <span class="glyphicon glyphicon-pencil"></span> Editar
+                                </button>
+                            }
+                            <p id="pDetails"></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @if (ViewBag.User != null && ViewBag.User.Id == ViewBag.Publicacao.Pessoa_Id)
+            {
+                <div id="myModalSave" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="col-md-12 form-horizontal">
+                                    <br>
+                                    <input type="hidden" id="hdEventId" value="0" />
+                                    <div class="form-group">
+                                        <label>Titulo:</label>
+                                        <input type="text" id="txtTitulo" class="form-control" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Data de Inicio:</label>
+                                        <div class="input-group date" id="dtp1">
+                                            <input type="text" id="txtStart" class="form-control" />
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" hidden>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="chkIsFullDay" checked="checked" />  Is Full Day event</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" id="divEndDate" style="display:none">
+                                        <label>End</label>
+                                        <div class="input-group date" id="dtp2">
+                                            <input type="text" id="txtEnd" class="form-control" />
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Descrição</label>
+                                        <textarea id="txtDescricao" rows="3" class="form-control"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Theme Color</label>
+                                        <select id="ddThemeColor" class="form-control">
+                                            <option value="">Default</option>
+                                            <option value="red">Red</option>
+                                            <option value="blue">Blue</option>
+                                            <option value="black">Black</option>
+                                            <option value="green">Green</option>
+                                        </select>
+                                    </div>
+                                    <button type="button" id="btnSave" class="btn btn-success">Salvar</button>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Styles{
+    <link rel="stylesheet" type="text/css" href="~/Content/asset/css/plugins/dropzone.css" />
+    <link rel="stylesheet" type="text/css" href="~/Content/asset/css/plugins/fullcalendar.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/Content/asset/css/plugins/summernote.css" />
+
+    <link rel="stylesheet" type="text/css" href="~/Content/asset/css/plugins/select2.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/Content/asset/css/plugins/ionrangeslider/ion.rangeSlider.css" />
+    <link rel="stylesheet" type="text/css" href="~/Content/asset/css/plugins/ionrangeslider/ion.rangeSlider.skinFlat.css" />
+    <link rel="stylesheet" type="text/css" href="~/Content/asset/css/plugins/bootstrap-material-datetimepicker.css" />
+}
+
+@section Scripts{
+    <script src="~/Content/asset/js/plugins/select2.full.min.js"></script>
+    <script src="~/Content/asset/js/plugins/jquery.knob.js"></script>
+    <script src="~/Content/asset/js/plugins/jquery.nicescroll.js"></script>
+    <script src="~/Content/asset/js/plugins/jquery.mask.min.js"></script>
+    <script src="~/Content/asset/js/plugins/nouislider.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#Tipo_Imovel_Id").select2({
+                placeholder: "Selecione um Tipo",
+            });
+            $("#e2").select2({
+                placeholder: "Selecione uma Cidade",
+            });
+            $("#Cidade_Id").select2({
+                placeholder: "Selecione uma Cidade",
+            });
+        });
+    </script>
+
+    <script src="~/Content/asset/js/jquery.mask.js"></script>
+    <script src="~/Content/asset/js/plugins/jquery.validate.min.js"></script>
+    <script src="~/Content/asset/js/plugins/fullcalendar.min.js"></script>
+    <script src="~/Content/asset/js/plugins/dropzone.js"></script>
+    <script src="~/Content/asset/js/plugins/summernote.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#RG').mask('00.000.000-0', { reverse: true });
+            $('#CPF').mask('000.000.000/00', { reverse: true });
+            $('#CEP').mask('00000-000');
+            $('#Data_Nascimento').mask('00/00/0000');
+            $('#CNPJ').mask('00.000.000/0000-00', { reverse: true });
+            $('#Data_Fundacao').mask('00/00/0000');
+        });
+
+        /*
+        $(document).ready(function () {
+            $('#calendar').fullCalendar({
+                monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Aug', 'Set', 'Out', 'Nov', 'Dez'],
+                dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+                dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                buttonText: { today: 'Hoje', month: 'Mês', week: 'Semana', day: 'Dia' },
+                header: {
+                    left: 'prev today',
+                    center: 'title',
+                    right: 'next'
+                },
+                editable: true,
+                droppable: true,
+                drop: function (date, jsEvent, ui) {
+                    if ($('#drop-remove').is(':checked')) {
+                        // if so, remove the element from the "Draggable Events" list
+                        $(this).remove();
+                    }
+                }
+            });
+
+            $(document).ready(function () {
+                $('#Descricao').summernote({
+                    height: 300
+                });
+            });
+        });
+        */
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var events = [];
+            var selectedEvent = null;
+            FetchEventAndRenderCalendar();
+            function FetchEventAndRenderCalendar() {
+                events = [];
+                $.ajax({
+                    type: "GET",
+                    url: "/Publicacao/GetEvents/@ViewBag.Publicacao.Id",
+                    success: function (data) {
+                        $.each(data, function (i, v) {
+                            events.push({
+                                eventId: v.EventId,
+                                titulo: v.Titulo,
+                                descricao: v.Descricao,
+                                start: moment(v.Start),
+                                end: v.End != null ? moment(v.End) : null,
+                                color: v.ThemeColor,
+                                allDay: v.IsFullDay
+                            });
+                        })
+                        GenerateCalender(events);
+                    },
+                    error: function (error) {
+                        alert('Erro no Calendario!!!');
+                    }
+                })
+            }
+
+            function GenerateCalender(events) {
+                $('#calendar').fullCalendar('destroy');
+                $('#calendar').fullCalendar({
+                    defaultDate: new Date(),
+                    monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Aug', 'Set', 'Out', 'Nov', 'Dez'],
+                    dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+                    dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                    buttonText: { today: 'Hoje', month: 'Mês', week: 'Semana', day: 'Dia' },
+                    header: {
+                        left: 'prev today',
+                        center: 'title',
+                        right: 'next'
+                    },
+                    eventColor: '#378006',
+                    events: events,
+                    eventClick: function (calEvent, jsEvent, view) {
+                        selectedEvent = calEvent;
+                        $('#myModal #eventTitle').text('Evento: ' + calEvent.titulo);
+                        var $descricao = $('<div/>');
+                        $descricao.append($('<p/>').html('<b>Inicio: </b>' + calEvent.start.format("DD/MM/YYYY")));
+                        if (calEvent.end != null) {
+                            $descricao.append($('<p/>').html('<b>Fim: </b>' + calEvent.end.format("DD/MM/YYYY")));
+                        }
+                        $descricao.append($('<p/>').html('<b>Titulo: </b>' + calEvent.titulo));
+                        $descricao.append($('<p/>').html('<b>Descrição: </b>' + calEvent.descricao));
+                        $('#myModal #pDetails').empty().html($descricao);
+                        $('#myModal').modal();
+                    },
+                    selectable: true,
+                    select: function (start, end) {
+                        selectedEvent = {
+                            eventId: 0,
+                            titulo: '',
+                            descricao: '',
+                            start: start,
+                            end: end,
+                            allDay: true,
+                            color: ''
+                        };
+                        openAddEditForm();
+                        $('#calendar').fullCalendar('unselect');
+                    },
+                    editable: false,
+                    eventDrop: function (event) {
+                        var data = {
+                            EventId: event.eventId,
+                            Titulo: event.titulo,
+                            Start: event.start.format('DD/MM/YYYY'),
+                            End: event.end != null ? event.end.format('DD/MM/YYYY') : null,
+                            Descricao: event.descricao,
+                            ThemeColor: event.color,
+                            IsFullDay: event.allDay
+                        };
+                        SaveEvent(data);
+                    }
+                })
+            }
+
+            $('#btnEdit').click(function () {
+                //Open modal dialog for edit event
+                openAddEditForm();
+            })
+
+            $('#btnDelete').click(function () {
+                if (selectedEvent != null && confirm('Tem certeza?' + selectedEvent.eventId)) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/Publicacao/DeleteEvent',
+                        data: { 'eventId': selectedEvent.eventId },
+                        success: function (data) {
+                            if (data.status) {
+                                //Refresh the calendar
+                                FetchEventAndRenderCalendar();
+                                $('#myModal').modal('hide');
+                            }
+                        },
+                        error: function () {
+                            alert('Erro ao Deletar!!!');
+                        }
+                    })
+                }
+            })
+
+            $('#dtp1,#dtp2').datetimepicker({
+                format: 'DD/MM/YYYY'
+            });
+
+            $('#chkIsFullDay').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#divEndDate').hide();
+                }
+                else {
+                    $('#divEndDate').show();
+                }
+            });
+
+            function openAddEditForm() {
+                if (selectedEvent != null) {
+                    $('#hdEventId').val(selectedEvent.eventId);
+                    $('#txtTitulo').val(selectedEvent.titulo);
+                    $('#txtStart').val(selectedEvent.start.format('DD/MM/YYYY'));
+                    $('#chkIsFullDay').prop("checked", selectedEvent.allDay || false);
+                    $('#chkIsFullDay').change();
+                    $('#txtEnd').val(selectedEvent.end != null ? selectedEvent.end.format('DD/MM/YYYY') : '');
+                    $('#txtDescricao').val(selectedEvent.descricao);
+                    $('#ddThemeColor').val(selectedEvent.color);
+                }
+                $('#myModal').modal('hide');
+                $('#myModalSave').modal();
+            }
+
+            $('#btnSave').click(function () {
+                //Validation/
+                if ($('#txtTitulo').val().trim() == "") {
+                    alert('Titulo required');
+                    return;
+                }
+                if ($('#txtStart').val().trim() == "") {
+                    alert('Start date required');
+                    return;
+                }
+                if ($('#chkIsFullDay').is(':checked') == false && $('#txtEnd').val().trim() == "") {
+                    alert('End date required');
+                    return;
+                }
+                else {
+                    var startDate = moment($('#txtStart').val(), "DD/MM/YYYY").toDate();
+                    var endDate = moment($('#txtEnd').val(), "DD/MM/YYYY").toDate();
+                    if (startDate > endDate) {
+                        alert('Invalid end date');
+                        return;
+                    }
+                }
+
+                var data = {
+                    EventId: $('#hdEventId').val(),
+                    Titulo: $('#txtTitulo').val().trim(),
+                    Start: $('#txtStart').val().trim(),
+                    End: $('#chkIsFullDay').is(':checked') ? null : $('#txtEnd').val().trim(),
+                    Descricao: $('#txtDescricao').val(),
+                    ThemeColor: $('#ddThemeColor').val(),
+                    IsFullDay: $('#chkIsFullDay').is(':checked'),
+                }
+                SaveEvent(data);
+            })
+
+            function SaveEvent(data) {
+                $.ajax({
+                    type: "POST",
+                    url: '/Publicacao/SaveEvent/@ViewBag.Publicacao.Id',
+                    data: data,
+                    success: function (data) {
+                        if (data.status) {
+                            // Atualiza Calndario
+                            FetchEventAndRenderCalendar();
+                            $('#myModalSave').modal('hide');
+                        }
+                    },
+                    error: function () {
+                        alert('Failed');
+                        alert('Data: ' + data);
+                    }
+                })
+            }
+        })
+    </script>
+}
+
+
+
+
+

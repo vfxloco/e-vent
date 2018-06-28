@@ -1,0 +1,207 @@
+﻿
+@{
+    ViewBag.Title = "Editar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form action="/Publicacao/Editar" method="post">
+    <div class="col-lg-6">
+        <div class="panel">
+            <div class="panel-heading">
+                <h3>Descrição</h3>
+            </div>
+            <div class="panel-body">
+                <textarea class="form-control" name="Descricao" style="max-width: 100%; max-height: 200px; min-height: 60px; min-width: 100%;" rows="4" cols="50">@ViewBag.Publicacao.Descricao</textarea>
+                <br />
+                <input type="text" class="form-text" id="Id" value="@ViewBag.Publicacao.Id" name="Id" hidden />
+                <input type="text" class="form-text" id="Status" value="@ViewBag.Publicacao.Status" name="Status" hidden />
+                <div class="form-group form-animate-text" style="margin-top:0px !important;">
+                    <input type="text" class="form-text" id="Imagem" value="@ViewBag.Publicacao.Imagem" name="Imagem">
+                    <span class="bar"></span>
+                    <label>Imagem</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="panel">
+            <div class="panel-heading">
+                <h3>Outras Informações</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group" style="margin-top:0px !important;">
+                            <h5>Selecione uma Cidade</h5>
+                            <select class="col-md-12" id="Cidade_Id" name="Cidade_Id" style="width: 100%">
+                                @foreach (var estado in ViewBag.Estado)
+                                {
+                                    if (estado.Status != 0)
+                                    {
+                                        <optgroup label="@estado.Nome (@estado.Sigla)">
+                                            @foreach (var cidade in ViewBag.Cidade)
+                                            {
+                                                if ((cidade.Status != 0) && (cidade.Estado_Nome == estado.Nome))
+                                                {
+                                                    <option @(cidade.Id == ViewBag.Publicacao.Cidade_Id ? "selected" : "") value="@cidade.Id">@cidade.Nome</option>
+                                                }
+                                            }
+                                        </optgroup>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group form-animate-text" style="margin-top:0px !important;">
+                            <input type="text" class="form-text" id="Rua" name="Rua" value="@ViewBag.Publicacao.Rua" required>
+                            <span class="bar"></span>
+                            <label>Rua</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group form-animate-text" style="margin-top:0px !important;">
+                            <input type="text" class="form-text" id="Bairro" name="Bairro" value="@ViewBag.Publicacao.Bairro" required>
+                            <span class="bar"></span>
+                            <label>Bairro</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-9">
+                        <div class="form-group form-animate-text" style="margin-top:0px !important;">
+                            <input type="text" class="form-text" id="Complemento" value="@ViewBag.Publicacao.Complemento" name="Complemento">
+                            <span class="bar"></span>
+                            <label>Complemento</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group form-animate-text" style="margin-top:0px !important;">
+                            <input type="number" size="6" maxlength="6" class="form-text" id="Numero" name="Numero" value="@ViewBag.Publicacao.Numero" required>
+                            <span class="bar"></span>
+                            <label>Numero</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-5">
+                        <div class="form-group form-animate-text" style="margin-top:0px !important;">
+                            <input type="text" size="20" maxlength="20" class="form-text" id="CEP" name="CEP" value="@ViewBag.Publicacao.CEP" required>
+                            <span class="bar"></span>
+                            <label>CEP</label>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-7">
+                        <h5>Tipo de Imoveis</h5>
+                        <select class="col-md-12" id="Tipo_Imovel_Id" name="Tipo_Imovel_Id" style="width: 100%">
+                            <optgroup label="Tipos de Imoveis">
+                                @foreach (var tipoImovel in ViewBag.TipoImovel)
+                                {
+                                    if (tipoImovel.Status != 0)
+                                    {
+                                        <option @(tipoImovel.Id == ViewBag.Publicacao.Tipo_Imovel_Id ? "selected" : "") value="@tipoImovel.Id">@tipoImovel.Nome</option>
+                                    }
+                                }
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-12">
+        <div class="panel">
+            <div class="panel-body">
+                <div class="col-sm-12 text-center" style="vertical-align: middle;">
+                    <p>
+                        <button type="submit" class="btn btn-primary">Editar Publicação</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Styles{
+    <link rel="stylesheet" type="text/css" href="~/Content/asset/css/plugins/dropzone.css" />
+    <link rel="stylesheet" type="text/css" href="~/Content/asset/css/plugins/fullcalendar.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/Content/asset/css/plugins/summernote.css" />
+
+    <link rel="stylesheet" type="text/css" href="~/Content/asset/css/plugins/select2.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/Content/asset/css/plugins/ionrangeslider/ion.rangeSlider.css" />
+    <link rel="stylesheet" type="text/css" href="~/Content/asset/css/plugins/ionrangeslider/ion.rangeSlider.skinFlat.css" />
+    <link rel="stylesheet" type="text/css" href="~/Content/asset/css/plugins/bootstrap-material-datetimepicker.css" />
+    <style type="text/css">
+    </style>
+}
+
+@section Scripts{
+    <script src="~/Content/asset/js/plugins/select2.full.min.js"></script>
+    <script src="~/Content/asset/js/plugins/jquery.knob.js"></script>
+    <script src="~/Content/asset/js/plugins/jquery.nicescroll.js"></script>
+    <script src="~/Content/asset/js/plugins/jquery.mask.min.js"></script>
+    <script src="~/Content/asset/js/plugins/nouislider.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#Tipo_Imovel_Id").select2({
+                placeholder: "Selecione um Tipo",
+            });
+            $("#e2").select2({
+                placeholder: "Selecione uma Cidade",
+            });
+            $("#Cidade_Id").select2({
+                placeholder: "Selecione uma Cidade",
+            });
+        });
+    </script>
+
+    <script src="~/Content/asset/js/jquery.mask.js"></script>
+    <script src="~/Content/asset/js/plugins/jquery.validate.min.js"></script>
+    <script src="~/Content/asset/js/plugins/fullcalendar.min.js"></script>
+    <script src="~/Content/asset/js/plugins/dropzone.js"></script>
+    <script src="~/Content/asset/js/plugins/summernote.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#RG').mask('00.000.000-0', { reverse: true });
+            $('#CPF').mask('000.000.000/00', { reverse: true });
+            $('#CEP').mask('00000-000');
+            $('#Data_Nascimento').mask('00/00/0000');
+            $('#CNPJ').mask('00.000.000/0000-00', { reverse: true });
+            $('#Data_Fundacao').mask('00/00/0000');
+        });
+
+        $(document).ready(function () {
+            $('#calendar').fullCalendar({
+                monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Aug', 'Set', 'Out', 'Nov', 'Dez'],
+                dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+                dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                buttonText: { today: 'Hoje', month: 'Mês', week: 'Semana', day: 'Dia' },
+                header: {
+                    left: 'prev today',
+                    center: 'title',
+                    right: 'next'
+                },
+                editable: true,
+                droppable: true,
+                drop: function (date, jsEvent, ui) {
+                    if ($('#drop-remove').is(':checked')) {
+                        $(this).remove();
+                    }
+                }
+            });
+
+            $(document).ready(function () {
+                $('#Descricao').summernote({
+                    height: 300
+                });
+            });
+        });
+    </script>
+}
+

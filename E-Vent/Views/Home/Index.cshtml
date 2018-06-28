@@ -1,0 +1,170 @@
+﻿@{
+    ViewBag.Title = "Página Inicial";
+}
+
+<!-- Pesquisa -->
+<div class="col-lg-12" style="padding:20px;padding-bottom:20px;">
+    <div class="panel">
+        <div class="panel-heading">
+            <h4 class="panel-title"><a><i class="fa fa-search"></i> Pesquisa</a></h4>
+        </div>
+        <div class="panel-body">
+            <form action="/" method="post">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <h5>Tipo de Imoveis</h5>
+                        <select class="col-md-12" id="e1" style="width: 100%">
+                            <option></option>
+                            <optgroup label="Tipos de Imoveis">
+                                @foreach (var tipoImovel in ViewBag.TipoImovel)
+
+                                {
+                                    if (tipoImovel.Status != 0)
+                                    {
+                                        <option value="@tipoImovel.Id">@tipoImovel.Nome</option>
+                                    }
+                                }
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group" style="margin-top:0px !important;">
+                            <h5>Selecione uma Cidade</h5>
+                            <select class="col-md-12" id="Cidade_Id" name="Cidade_Id" style="width: 100%">
+                                <option></option>
+                                @foreach (var estado in ViewBag.Estado)
+                                {
+                                    if (estado.Status != 0)
+                                    {
+                                        <optgroup label="@estado.Nome (@estado.Sigla)">
+                                            @foreach (var cidade in ViewBag.Cidade)
+                                            {
+                                                if ((cidade.Status != 0) && (cidade.Estado_Nome == estado.Nome))
+                                                {
+                                                    <option value="@cidade.Id">@cidade.Nome</option>
+                                                }
+                                            }
+                                        </optgroup>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4 text-center" style="vertical-align: middle;">
+                        <br />
+                        <p>
+                            <button type="button" class="btn btn-success"><i class="fa fa-search"></i> Procurar</button>
+                        </p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Publicação -->
+    <div class="col-md-12" data-child="row">
+            <div class="row display-flex">
+                @foreach (var publicacao in ViewBag.Publicacoes) {
+                    if(Convert.ToInt32(publicacao.Status) == 1) { 
+                <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-body ">
+                            @if(!string.IsNullOrEmpty(@publicacao.Imagem)){
+                                <img class="img-responsive img-thumbnail" style="overflow:hidden; width: 100%; height: 250px;" alt="3" src="@publicacao.Imagem">
+                            }
+                            else
+                            {
+                                <div class="img-responsive img-thumbnail" style="overflow:hidden; width: 100%; height: 250px;"><div style="position: relative; top: 50%; left: 35%; font-weight: bold;">Sem imagem</div></div>
+                            }
+                            <div class="caption">
+                                    <p>
+                                        @foreach (var tipoImovel in ViewBag.TipoImovel)
+                                        {
+                                            if (tipoImovel.Id == publicacao.Tipo_Imovel_Id)
+                                            {
+                                                <small>@tipoImovel.Nome</small>
+                                            }
+                                        }
+
+                                        <small class="pull-right">
+                                            <span>@publicacao.Data_Publicacao.Date.ToString("dd/MM/yyyy")</span>
+                                        </small>
+                                    </p>
+                                    @foreach (var estado in ViewBag.Estado)
+                                    {
+                                        foreach (var cidade in ViewBag.Cidade)
+                                        {
+                                            if (publicacao.Cidade_Id == cidade.Id && cidade.Estado_Nome == estado.Nome)
+                                            {
+                                                <h4>@cidade.Nome, @estado.Nome</h4>
+                                            }
+                                        }
+                                    }
+                                @if(!string.IsNullOrEmpty(publicacao.Descricao))
+                                {
+                                    <p>Descrição:</p>
+                                    string texto = publicacao.Descricao.Trim();
+                                    texto = texto.Substring(0, (texto.Length < 86 ? texto.Length : 86));
+                                    <p>
+                                        @texto @(texto.Length >= 86 ? "..." : "")
+                                        <br />
+                                        <p style="position: static; width: 100%;"><a href="/Publicacao/Index/@publicacao.Id" style="width: 100%;" class="btn btn-primary" role="button">Leia Mais</a></p>
+                                    </p>
+                                }
+                                </div>
+                                
+                            </div>
+                    </div>
+                </div>
+                    }
+                 }
+            </div>
+    </div>
+
+    @section Styles{
+        <link rel="stylesheet" type="text/css" href="~/Content/asset/css/plugins/select2.min.css" />
+        <link rel="stylesheet" type="text/css" href="~/Content/asset/css/plugins/ionrangeslider/ion.rangeSlider.css" />
+        <link rel="stylesheet" type="text/css" href="~/Content/asset/css/plugins/ionrangeslider/ion.rangeSlider.skinFlat.css" />
+        <link rel="stylesheet" type="text/css" href="~/Content/asset/css/plugins/bootstrap-material-datetimepicker.css" />
+        <link rel="stylesheet" type="text/css" href="~/Content/asset/css/plugins/nouislider.min.css" />
+        <style>
+            .row.display-flex {
+                display: flex;
+                flex-wrap: wrap;
+            }
+            .row.display-flex > [class*='col-'] {
+                display: flex;
+                flex-direction: column;
+            }
+            .panel {
+                height: 100%;
+            }
+        </style>
+    }
+
+    @section Scripts{
+        <script src="~/Content/asset/js/plugins/jquery.validate.min.js"></script>
+        <script src="~/Content/asset/js/plugins/select2.full.min.js"></script>
+        <script src="~/Content/asset/js/plugins/jquery.knob.js"></script>
+        <script src="~/Content/asset/js/plugins/ion.rangeSlider.min.js"></script>
+        <script src="~/Content/asset/js/plugins/bootstrap-material-datetimepicker.js"></script>
+        <script src="~/Content/asset/js/plugins/jquery.nicescroll.js"></script>
+        <script src="~/Content/asset/js/plugins/jquery.mask.min.js"></script>
+        <script src="~/Content/asset/js/plugins/nouislider.min.js"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#e1").select2({
+                    placeholder: "Selecione um Tipo",
+                });
+                $("#e2").select2({
+                    placeholder: "Selecione uma Cidade",
+                });
+                $("#Cidade_Id").select2({
+                    placeholder: "Selecione uma Cidade",
+                });
+            });
+        </script>
+    }

@@ -1,0 +1,166 @@
+﻿@using E_Vent.Areas.Admin.Models;
+@{
+    ViewBag.Title = "Usuarios";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-12 top-10 padding-0">
+    <div class="col-md-12">
+        <a type="button" class="btn btn-primary" href="/Admin/Usuarios/Cadastrar">
+            Cadastar Usuario
+        </a>
+    </div>
+    <div class="col-md-12">
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingOne">
+                    <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <h4>Pessoas Fisicas</h4>
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="panel-body">
+
+                        <div class="responsive-table">
+                            <table id="datatables-example1" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th class="center">ID</th>
+                                        <th class="center">Nome</th>
+                                        <th class="center">E-Mail</th>
+                                        <th class="center">WebSite</th>
+                                        <th class="center">Cpf</th>
+                                        <th class="center">RG</th>
+                                        <th class="center">Data Cadastro</th>
+                                        <th class="center">Data Nascimento</th>
+                                        <th class="center">Status</th>
+                                        <th class="center">Ação</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var pessoasFisicas in ViewBag.PessoasFisicas)
+                                    {
+                                        <tr>
+                                            <td class="center">@pessoasFisicas.Id</td>
+                                            <td class="center">@pessoasFisicas.Nome</td>
+                                            <td class="center">@pessoasFisicas.Email</td>
+                                            <td class="center">@(pessoasFisicas.Website == null ? pessoasFisicas.Website : "Sem WebSite")</td>
+                                            <td class="center">@pessoasFisicas.CPF</td>
+                                            <td class="center">@pessoasFisicas.RG</td>
+                                            <td class="center">@pessoasFisicas.Data_Cadastro.ToString("dd/MM/yyyy")</td>
+                                            <td class="center">@pessoasFisicas.Data_Nascimento.ToString("dd/MM/yyyy")</td>
+                                            @foreach (var status in ViewBag.Status)
+                                            {
+                                                if (pessoasFisicas.Status == Convert.ToInt32(status))
+                                                {
+                                                    <td class="center">@status</td>
+                                                }
+                                            }
+                                            <td class="center">
+                                                <div class="btn-group" role="group" aria-label="...">
+                                                    <a type="button" class="btn btn-danger" href="/Admin/Usuarios/Status/@pessoasFisicas.Id">
+                                                        @((pessoasFisicas.Status == 1) ? "Desativar" : "Ativar")
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingTwo">
+                    <h4 class="panel-title">
+                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            <h4>Pessoas Juridicas</h4>
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                    <div class="panel-body">
+
+                        <div class="responsive-table">
+                            <table id="datatables-example2" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th class="center">ID</th>
+                                        <th class="center">Nome</th>
+                                        <th class="center">E-Mail</th>
+                                        <th class="center">WebSite</th>
+                                        <th class="center">Cnpj</th>
+                                        <th class="center">Incrição Estadual</th>
+                                        <th class="center">Data Cadastro</th>
+                                        <th class="center">Data de Fundação</th>
+                                        <th class="center">Status</th>
+                                        <th class="center">Ação</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var pessoasJuridicas in ViewBag.PessoasJuridicas)
+                                    {
+                                        <tr>
+                                            <td class="center">@pessoasJuridicas.Id</td>
+                                            <td class="center">@pessoasJuridicas.Nome</td>
+                                            <td class="center">@pessoasJuridicas.Email</td>
+                                            <td class="center">@(pessoasJuridicas.Website == null ? pessoasJuridicas.Website : "Sem WebSite")</td>
+                                            <td class="center">@pessoasJuridicas.CNPJ</td>
+                                            <td class="center">@pessoasJuridicas.Insc_Estadual</td>
+                                            <td class="center">@pessoasJuridicas.Data_Cadastro.ToString("dd/MM/yyyy")</td>
+                                            <td class="center">@pessoasJuridicas.Data_Fundacao.ToString("dd/MM/yyyy")</td>
+                                            @foreach (var status in ViewBag.Status)
+                                            {
+                                                if (pessoasJuridicas.Status == Convert.ToInt32(status))
+                                                {
+                                                    <td class="center">@status</td>
+                                                }
+                                            }
+                                            <td class="center">
+                                                <div class="btn-group" role="group" aria-label="...">
+                                                    <a type="button" class="btn btn-danger" href="/Admin/Usuarios/Status/@pessoasJuridicas.Id">
+                                                        @((pessoasJuridicas.Status == 1) ? "Desativar" : "Ativar")
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles{
+    <link rel="stylesheet" type="text/css" href="~/Content/asset/css/plugins/datatables.bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/Content/asset/css/plugins/select2.min.css" />
+}
+
+@section Scripts{
+    <script src="~/Content/asset/js/plugins/jquery.datatables.min.js"></script>
+    <script src="~/Content/asset/js/plugins/datatables.bootstrap.min.js"></script>
+    <script src="~/Content/asset/js/plugins/select2.full.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#datatables-example1').DataTable();
+            $('#datatables-example2').DataTable();
+        });
+
+        $(document).ready(function () {
+            $("#Status").select2({
+                placeholder: "Selecione o Status",
+            });
+        });
+    </script>
+}
+

@@ -1,0 +1,66 @@
+﻿@model E_Vent.Areas.Admin.Models.TipoImovel
+@{
+    ViewBag.Title = "Editar";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-12 top-20 padding-0">
+    <div class="col-md-12">
+        <div class="panel">
+            <div class="panel-heading"><h3>@ViewBag.Title</h3></div>
+            <div class="panel-body">
+                <form action="/Admin/TipoImovel/Editar/@Model.Id" method="post">
+                    <div class="col-md-0">
+                        <div hidden class="form-group form-animate-text" style="margin-top:0px !important;">
+                            <input type="text" class="form-text" id="Id" name="Id" value="@Model.Id" required>
+                            <span class="bar"></span>
+                            <label>ID</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group form-animate-text" style="margin-top:0px !important;">
+                            <input type="text" class="form-text" id="Nome" name="Nome" value="@Model.Nome" required>
+                            <span class="bar"></span>
+                            <label>Nome</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group form-animate-text" style="margin-top:0px !important;">
+                            <p>Selecione um Status</p>
+                            <select class="col-md-12" id="Status" name="Status">
+                                @foreach (var status in ViewBag.Status)
+                                {
+                                    if (status == Model.Status)
+                                    {
+                                        <option selected value="@Convert.ToInt32(status)">@status</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@Convert.ToInt32(status)">@status</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group form-animate-text" style="margin-top:0px !important;">
+                            <div class="btn-group" role="group" aria-label="...">
+                                <input class="submit btn btn-danger" type="submit" value="Editar">
+                                <a type="button" class="btn btn-primary" href="/Admin/TipoImovel/Index">Cancelar</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles{
+
+}
+
+@section Scripts{
+
+}

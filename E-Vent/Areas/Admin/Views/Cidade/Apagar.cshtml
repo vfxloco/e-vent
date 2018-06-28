@@ -1,0 +1,86 @@
+﻿
+@{
+    ViewBag.Title = "Apagar";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-12 top-20 padding-0">
+    <div class="col-md-12">
+        <div class="panel">
+            <div class="panel-heading"><h3>@ViewBag.Title - Cidade</h3></div>
+            <div class="panel-body">
+                <form action="/Admin/Cidade/Apagar/@Model.Id" method="post">
+                    <div class="col-md-0">
+                        <div hidden class="form-group form-animate-text" style="margin-top:0px !important;">
+                            <input type="text" class="form-text" id="Id" name="Id" value="@Model.Id" disabled>
+                            <span class="bar"></span>
+                            <label>ID</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group col-sm-12">
+                            <label class=" control-label">Nome</label>
+                            <input type="text" class="form-control" value="@Model.Nome" disabled>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" style="margin-top:0px !important;">
+                            <p>Selecione um Estado</p>
+                            <select class="col-md-12" id="Estado_Id" name="Estado_Id" disabled>
+                                @foreach (var estado in ViewBag.Estado)
+                                {
+                                    if (estado.Status != 0)
+                                    {
+                                        if (estado.Id == Model.Estado_Id)
+                                        {
+                                            <option selected value="@estado.Id">@estado.Nome (@estado.Sigla)</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@estado.Id">@estado.Nome (@estado.Sigla)</option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group form-animate-text" style="margin-top:0px !important;">
+                            <p>Selecione um Status</p>
+                            <select class="col-md-12" id="Status" name="Status" disabled>
+                                @foreach (var status in ViewBag.Status)
+                                {
+                                    if (status == Model.Status)
+                                    {
+                                        <option selected value="@Convert.ToInt32(status)">@status</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@Convert.ToInt32(status)">@status</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group form-animate-text" style="margin-top:0px !important;">
+                            <div class="btn-group" role="group" aria-label="...">
+                                <input class="submit btn btn-danger" type="submit" value="Apagar">
+                                <a type="button" class="btn btn-primary" href="/Admin/Cidade/Index">Cancelar</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles{
+
+}
+
+@section Scripts{
+
+}
+

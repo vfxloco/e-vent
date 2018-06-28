@@ -1,0 +1,253 @@
+﻿@model E_Vent.Models.Pessoa.PessoaViewModel
+
+@{
+    ViewBag.Title = "Cadastrar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-lg-12" style="padding:20px;padding-bottom:20px;">
+    <div class="panel">
+        <div class="panel-heading">
+            <h3>Cadastrar-se</h3>
+        </div>
+        <div class="panel-body">
+            <form action="/Usuario/Cadastrar" id="signupForm" method="post">
+                <div class="col-md-12">
+                    <div class="form-group form-animate-text" style="margin-top:40px !important;">
+                        <input type="text" class="form-text" id="Nome" name="Nome" required>
+                        <span class="bar"></span>
+                        <label>Nome Completo*</label>
+                    </div>
+                    <div class="form-group form-animate-text" style="margin-top:40px !important;">
+                        <input type="email" class="form-text" id="Email" name="Email" required>
+                        <span class="bar"></span>
+                        <label>E-mail*</label>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group form-animate-text">
+                        <input type="password" class="form-text" id="Senha" name="Senha" required>
+                        <span class="bar"></span>
+                        <label>Senha*</label>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group form-animate-text">
+                        <input type="password" class="form-text" id="ConfirmSenha" name="ConfirmSenha" required>
+                        <span class="bar"></span>
+                        <label>Confirmar Senha*</label>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group form-animate-text">
+                        <input type="text" class="form-text" id="Website" name="Website">
+                        <span class="bar"></span>
+                        <label>Web Site</label>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="btn-group btn-group-justified form-animate-checkbox">
+                            <div class="btn col-md-6">
+                                <label for="optFisica" class="radio">
+                                    <input id="optFisica" name="Tipo_Pessoa" value="1" checked type="radio" data-target="#scheduleDaily">
+                                    <span class="outer">
+                                        <span class="inner"></span>
+                                    </span>
+                                    Pessoa Fisica
+                                </label>
+                            </div>
+                            <div class="btn col-md-6">
+                                <label for="optJuridica" class="radio">
+                                    <input id="optJuridica" name="Tipo_Pessoa" value="2" type="radio" data-target="#scheduleWeekly">
+                                    <span class="outer">
+                                        <span class="inner"></span>
+                                    </span>
+                                    Pessoa Juridica
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" style="margin-top:40px !important;">
+                            <div id="scheduleDaily" class="tab-pane active">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group form-animate-text">
+                                            <input type="text" class="form-text" id="RG" name="RG" required>
+                                            <span class="bar"></span>
+                                            <label>RG*</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group form-animate-text">
+                                            <input type="text" class="form-text" id="CPF" name="CPF" required>
+                                            <span class="bar"></span>
+                                            <label>CPF*</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group form-animate-text">
+                                            <input type="text" class="form-text" id="Data_Nascimento" name="Data_Nascimento" required>
+                                            <span class="bar"></span>
+                                            <label>Data Nascimento*</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="scheduleWeekly" class="tab-pane">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group form-animate-text">
+                                            <input type="text" class="form-text" id="Insc_Estadual" name="Insc_Estadual" required>
+                                            <span class="bar"></span>
+                                            <label>Inscrição Estadual*</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group form-animate-text">
+                                            <input type="text" class="form-text" id="CNPJ" name="CNPJ" required>
+                                            <span class="bar"></span>
+                                            <label>CNPJ*</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group form-animate-text">
+                                            <input type="text" class="form-text" id="Data_Fundacao" name="Data_Fundacao" required>
+                                            <span class="bar"></span>
+                                            <label>Data Fundação*</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12" style="margin-top:5px !important;">
+                    <div class="col-md-6">
+                        <div class="form-group form-animate-checkbox">
+                            <input type="checkbox" class="checkbox" id="AcordoForm" name="AcordoForm">
+                            <label>
+                                Por favor, concorde com a nossas políticas.*
+                            </label>
+                        </div>
+                    </div>
+                    <input class="submit btn btn-primary btn-block btn-lg" type="submit" value="Cadastrar-se">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Styles{
+
+}
+
+@section Scripts{
+    <script src="~/Content/asset/js/jquery.mask.js"></script>
+    <script src="~/Content/asset/js/plugins/jquery.validate.min.js"></script>
+
+    <script type="text/javascript">
+        $('input[name="Tipo_Pessoa"]').click(function () {
+            $(this).tab('show');
+        });
+
+        $(document).ready(function () {
+            $('#RG').mask('00.000.000-0', { reverse: true });
+            $('#CPF').mask('000.000.000/00', { reverse: true });
+            $('#CEP').mask('00000-000');
+            $('#Data_Nascimento').mask('00/00/0000');
+            $('#CNPJ').mask('00.000.000/0000-00', { reverse: true });
+            $('#Data_Fundacao').mask('00/00/0000');
+        });
+
+        $("#signupForm").validate({
+            errorElement: "em",
+            errorPlacement: function (error, element) {
+                $(element.parent("div").addClass("form-animate-error"));
+                error.appendTo(element.parent("div"));
+            },
+            success: function (label) {
+                $(label.parent("div").removeClass("form-animate-error"));
+            },
+            rules: {
+                Nome: {
+                    required: true,
+                    minlength: 3
+                },
+                Senha: {
+                    required: true,
+                    minlength: 5
+                },
+                ConfirmSenha: {
+                    required: true,
+                    minlength: 5,
+                    equalTo: "#Senha"
+                },
+                Email: {
+                    required: true,
+                    email: true
+                },
+                RG: {
+                    required: true
+                },
+                CPF: {
+                    required: true
+                },
+                Data_Nascimento: {
+                    required: true
+                },
+                Insc_Estadual: {
+                    required: true,
+                },
+                CNPJ: {
+                    required: true
+                },
+                Data_Fundacao: {
+                    required: true
+                },
+                AcordoForm: "required"
+            },
+            messages: {
+                Nome: {
+                    required: "Por favor informe seu Nome Completo",
+                    minlength: "Seu nome deve ter pelo menos 3 caracteres"
+                },
+                Senha: {
+                    required: "Por favor, forneça uma senha",
+                    minlength: "Sua senha deve ter pelo menos 5 caracteres"
+                },
+                ConfirmSenha: {
+                    required: "Por favor, forneça uma senha",
+                    minlength: "Sua senha deve ter pelo menos 5 caracteres",
+                    equalTo: "Por favor, digite a mesma senha"
+                },
+                Email: "Por favor insira um endereço de e-mail válido",
+                RG: {
+                    required: "Por favor, forneça o numero do RG",
+                },
+                CPF: {
+                    required: "Por favor, forneça o numero do CPF",
+                },
+                Data_Nascimento: {
+                    required: "Por favor, forneça sua Data de Nascimento",
+                },
+                Insc_Estadual: {
+                    required: "Por favor, forneça o numero de sua Inscrição Estadual",
+                },
+                CNPJ: {
+                    required: "Por favor, forneça o CNPJ",
+                },
+                Data_Fundacao: {
+                    required: "Por favor, forneça a Data de Fundação",
+                },
+                AcordoForm: "Por favor, aceite nossa política"
+            }
+        });
+    </script>
+}

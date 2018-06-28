@@ -1,0 +1,89 @@
+﻿@{
+    ViewBag.Title = "Contact";
+}
+
+<div class="col-md-12" data-child="row">
+    <div class="row">
+        @for (int a = 0; a < 3; a++)
+        {
+        <div class="col-sm-6 col-md-4 product-grid" data-child="hpanel" data-effect="fadeInLeft">
+            @for (int i = 0; i < 2; i++)
+            {
+            <div class="hpanel">
+                <div class="thumbnail">
+                    <img class="img-responsive" alt="3" src="~/Content/asset/img/bg1.jpg">
+                    <div class="caption">
+                        <p>
+                            <small>Category</small>
+                            <small class="pull-right">
+                                <span>@DateTime.Now.Date</span>
+                            </small>
+                        </p>
+                        <h4>São José do Rio Preto, São Paulo</h4>
+                        <p>Descrição:</p>
+                        <p>Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis.</p>
+                        <p><a href="#" class="btn btn-primary" role="button">Leia Mais</a></p>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+        }
+    </div>
+</div>
+
+<div class="col-md-12" data-child="row">
+    <div class="row">
+        @foreach (var publicacao in ViewBag.Publicacoes)
+        {
+            if (publicacao.Status != 0)
+            {
+                <div data-ng-repeat="s in Results" data-ng-repeat-finished>
+                    <div class="col-sm-6 col-md-4 product-grid" data-child="hpanel" data-effect="fadeInLeft">
+                        <div class="hpanel">
+                            <div class="thumbnail AutoResizeToLargestElement">
+                                <img class="img-responsive" style="overflow:hidden; width: 400px; height: 250px;" alt="3" src="~/Content/asset/img/@publicacao.Imagem">
+                                <div class="caption">
+                                    <p>
+                                        @foreach (var tipoImovel in ViewBag.TipoImovel)
+                                        {
+                                            if (tipoImovel.Id == publicacao.Tipo_Imovel_Id)
+                                            {
+                                                <small>@tipoImovel.Nome</small>
+                                            }
+                                        }
+
+                                        <small class="pull-right">
+                                            <span>@publicacao.Data_Publicacao.Date.ToString("dd/MM/yyyy")</span>
+                                        </small>
+                                    </p>
+                                    @foreach (var estado in ViewBag.Estado)
+                                    {
+                                        foreach (var cidade in ViewBag.Cidade)
+                                        {
+                                            if (publicacao.Cidade_Id == cidade.Id && cidade.Estado_Nome == estado.Nome)
+                                            {
+                                                <h4>@cidade.Nome, @estado.Nome</h4>
+                                            }
+                                        }
+                                    }
+                                    <p>Descrição:</p>
+                                    @{
+                                        string texto = publicacao.Descricao.Trim();
+                                        texto = texto.Replace("\n", " ");
+                                        texto = texto.Trim();
+                                        texto = texto.Substring(0, (texto.Length < 200 ? texto.Length : 200));
+                                        <p>
+                                            @texto
+                                        </p>
+                                    }
+                                    <p><a href="#" class="btn btn-primary" role="button">Leia Mais</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
